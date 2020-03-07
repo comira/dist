@@ -51,7 +51,10 @@ self.addEventListener('fetch', function (event) {
     }
     //headers.set('content-type', 'image/png');
     headers.set('power-by', 'BunnyFront');
-    event.respondWith(fetch('asset/' + req.pathname.replace('/dist/','/') + '.txt').then(r => r.text()).then(r => {
+    event.respondWith(fetch('asset/' + req.pathname.replace('/dist/','/') + '.txt').catch(err => {
+        let blob = new Blob(['404 Not Found'], {});
+        return new Response(blob, {headers: headers})
+    }).then(r => r.text()).then(r => {
         let blob = new Blob([fromBase64(r)], {});
         return  new Response(blob, {headers: headers})
     }));
