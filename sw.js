@@ -14,9 +14,9 @@ function getLocation(href) {
 
 function getQueryVariable(search, variable) {
     var query = search.substring(1);
-    var vars = query.split("&");
+    var vars = query.split('&');
     for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
+        var pair = vars[i].split('=');
         if (pair[0] === variable) {
             return pair[1];
         }
@@ -49,15 +49,19 @@ self.addEventListener('fetch', function (event) {
     if (req.pathname.startsWith('/asset/') || req.pathname.startsWith('asset/')) {
         return;
     }
-    if (req.pathname==="/dist/" || req.pathname==="/dist" || req.pathname==="/dist/index"  || req.pathname==="/dist/index.html") {
-        req.pathname="/dist/index.html";
+    if (req.pathname === '/dist/' || req.pathname === '/dist') {
+        req.pathname = "/dist/index.html";
     }
-    //headers.set('content-type', 'image/png');
-    headers.set('power-by', 'BunnyFront');
-    event.respondWith(fetch('asset/' + req.pathname.replace('/dist/','/') + '.txt').then(r => r.text()).then(r => {
-        let blob = new Blob([fromBase64(r)], {});
-        resolve(new Response(blob, {headers: headers}))
-    }).catch(err => {
-        resolve(new Response(['404 Not Found'], {headers: headers}));
-    });
+    if (req.pathname.endsWith('/')) {
+        req.pathname = req.pathname + "index.html";
+    }
+    headers.set('power-by', 'SecretPage');
+    event.respondWith(new Promise((resolve, reject) => {
+        fetch('asset/' + req.pathname.replace('/dist/', '/') + '.txt').then(r => r.text()).then(r => {
+            let blob = new Blob([fromBase64(r)], {});
+            resolve(new Response(blob, {headers: headers}))
+        }).catch(err => {
+            resolve(new Response(['404 Not Found'], {headers: headers}));
+        });
+    }));
 });
