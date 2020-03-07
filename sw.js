@@ -46,7 +46,7 @@ self.addEventListener('fetch', function (event) {
         return;
     }
     let headers = new Headers();
-    if (req.pathname.endsWith('index.html')) {
+    if (req.pathname==="/dist/" || req.pathname==="/dist" || req.pathname==="/dist/index"  || req.pathname==="/dist/index.html") {
         headers.set('content-type', 'text/html');
         headers.set('power-by', 'BunnyFront');
         event.respondWith(
