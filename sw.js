@@ -46,6 +46,9 @@ self.addEventListener('fetch', function (event) {
         return;
     }
     let headers = new Headers();
+    if (req.pathname.startsWith('/asset/') || req.pathname.startsWith('asset/')) {
+        return;
+    }
     if (req.pathname==="/dist/" || req.pathname==="/dist" || req.pathname==="/dist/index"  || req.pathname==="/dist/index.html") {
         req.pathname="/dist/index.html";
     }
