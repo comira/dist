@@ -47,12 +47,7 @@ self.addEventListener('fetch', function (event) {
     }
     let headers = new Headers();
     if (req.pathname==="/dist/" || req.pathname==="/dist" || req.pathname==="/dist/index"  || req.pathname==="/dist/index.html") {
-        headers.set('content-type', 'text/html');
-        headers.set('power-by', 'BunnyFront');
-        event.respondWith(
-            new Response(['Hello World'], {headers: headers})
-        );
-        return;
+        req.pathname="/dist/index.html";
     }
     //headers.set('content-type', 'image/png');
     headers.set('power-by', 'BunnyFront');
